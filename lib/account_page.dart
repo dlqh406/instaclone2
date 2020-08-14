@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AccountPage extends StatelessWidget {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 //  final FirebaseUser user;
-
 //  AccountPage(this.user);
 
 
@@ -121,7 +123,8 @@ class AccountPage extends StatelessWidget {
           color: Colors.black,
           onPressed: () {
             // 로그아웃
-
+            FirebaseAuth.instance.signOut();
+            _googleSignIn.signOut();
           },
         )
       ],
