@@ -72,14 +72,19 @@ class SearchPage extends StatelessWidget {
 
   }// snap.data.documents로 받아온 데이터를 파라미터로 쓸땐 DocumentSnapshot 데이터 타입을 붙여줘야함
   Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
-    return InkWell(
-      onTap: (){
-         Navigator.push(
-         context, MaterialPageRoute(builder: (context) => DetailPostPage(document, user)),
-         );
-      },
-      child: Image.network(document['photoUrl'],
-        fit: BoxFit.cover,
+    return Hero(
+      tag: document.documentID,
+      child: Material(
+        child: InkWell(
+          onTap: (){
+             Navigator.push(
+             context, MaterialPageRoute(builder: (context) => DetailPostPage(document, user)),
+             );
+          },
+          child: Image.network(document['photoUrl'],
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }

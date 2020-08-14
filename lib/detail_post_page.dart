@@ -63,7 +63,7 @@ class DetailPostPage extends StatelessWidget {
             ),
           ),
           Hero(
-            tag: document['photoUrl'],
+            tag: document.documentID,
             child: Image.network(
               document['photoUrl'],
               fit: BoxFit.cover,
