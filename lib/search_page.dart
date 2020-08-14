@@ -1,14 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'create_page.dart';
 import 'detail_post_page.dart';
 
 class SearchPage extends StatelessWidget {
-//  final FirebaseUser user;
-
-//  SearchPage(this.user);
+  final FirebaseUser user;
+  SearchPage(this.user);
 
   @override
   Widget build(BuildContext context) {
