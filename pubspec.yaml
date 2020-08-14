@@ -28,6 +28,7 @@ dependencies:
   google_sign_in: ^4.1.0
   flutter_signin_button: ^0.2.8
   google_fonts: ^0.1.1
+  cloud_firestore: ^0.13.7
 
 dev_dependencies:
   flutter_test:
