@@ -53,7 +53,7 @@ class SearchPage extends StatelessWidget {
             // 데이터가 다 들어가있는 리스트 [{text, greentea, test@test.com, asadsad},{...}]
             itemCount: snapshot.data.documents.length,
             itemBuilder: (BuildContext context, int index) {
-              return _buildListItem(snapshot.data.documents[index]);
+              return _buildListItem(context, snapshot.data.documents[index]);
 
             },
           );
@@ -71,9 +71,16 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  Widget _buildListItem(DocumentSnapshot document) {
-    return Image.network(document['photoUrl'],
-      fit: BoxFit.cover,
+  Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
+    return InkWell(
+      onTap: (){
+         Navigator.push(
+         context, MaterialPageRoute(builder: (context) => DetailPostPage(document, user)),
+         );
+      },
+      child: Image.network(document['photoUrl'],
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

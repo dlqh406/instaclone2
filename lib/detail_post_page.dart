@@ -1,14 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DetailPostPage extends StatelessWidget {
-  final document = {
-    'userPhotoUrl': '',
-    'email': 'test@test.com',
-    'displayName': '더미',
-  };
-//  final FirebaseUser user;
 
-//  DetailPostPage({this.document, this.user});
+  final DocumentSnapshot document;
+  final FirebaseUser user;
+  DetailPostPage(this.document, this.user);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,7 @@ class DetailPostPage extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 CircleAvatar(
-                  backgroundImage: NetworkImage(document['userPhotoUrl']),
+                  backgroundImage: NetworkImage(user.photoUrl),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
