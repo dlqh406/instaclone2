@@ -58,3 +58,5 @@ class SearchPage extends StatelessWidget {
     );
   }
 }
+
+//fireStore에 데이터 수동으로 추가했음
