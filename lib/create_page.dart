@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +19,7 @@ class _CreatePageState extends State<CreatePage> {
   final textEditingController = TextEditingController();
 
   // 처음 메소드를 호풀할때 initState()로 작성
-  // 여기서 _getImage()가 호출됨                                                                    
+  // 여기서 _getImage()가 호출됨
   @override
   void initState() {
     super.initState();
@@ -67,17 +69,28 @@ class _CreatePageState extends State<CreatePage> {
   }
 
   Future _uploadFile(BuildContext context) async {
-    // 스토리지에 업로드할 파일 경로
-
-    // 파일 업로드
-
+    // storage에 업로드할 파일 경로 지정
+    final firebaseStorageRef = FirebaseStorage.instance
+        .ref()
+        .child('post')
+        .child('${DateTime.now().millisecondsSinceEpoch}.png');
+    // 파일 업로드(파일 지정, 파일형식 지정)
+    final task = firebaseStorageRef.putFile(
+        _image, StorageMetadata(contentType: 'image/png'));
     // 완료까지 기다림
+    final storageTaskSnapshot = await task.onComplete;
+    // 업로드 완료 후 url를 downloadUrl 변수에 저장
+    final downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+    // firestore 업로드 실행
+      Firestore.instance.collection('post').add({
+          'contents': textEditingController.text,
+          'displayName': widget.user.displayName,
+          'email': widget.user.email,
+          'photoUrl': downloadUrl,
+          'userPhotoUrl': widget.user.photoUrl
+    });
 
-    // 업로드 완료 후 url
-
-    // 문서 작성
-
-    // 완료 후 앞 화면으로 이동
+      // 앞화면으로 이동(뒤로가기)
     Navigator.pop(context);
   }
 
@@ -155,9 +168,7 @@ class _CreatePageState extends State<CreatePage> {
   }
 
   Widget _buildImage() {
-    return _image == null
-        ? Text('No Image')
-        : Image.file(
+    return _image == null ? Text('No Image') : Image.file(
             _image,
             width: 50,
             height: 50,
