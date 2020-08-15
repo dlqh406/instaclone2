@@ -44,7 +44,7 @@ class DetailPostPage extends StatelessWidget {
                           SizedBox(
                             width: 8,
                           ),
-                          // 실시간으로 데이터를 바꾸거나 할때 streamBuilder 사용 
+                          // 실시간으로 데이터를 바꾸거나 할때 streamBuilder 사용
                           StreamBuilder<DocumentSnapshot>(
                             stream: _followingStream(),
                             builder: (context, snapshot) {
