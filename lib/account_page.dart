@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -136,7 +137,10 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  // 내 게시물 가져오기
+  // 내 게시물 가져오기,
+  // 한개의 데이터를 가져올때는 DocumentSnapshot
+  // 여러개의 데이터를 가져올떄는 QuerySnapshot
+//Stream<QuerySnapshot>
 
   // 팔로잉 가져오기
 

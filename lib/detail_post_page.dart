@@ -44,14 +44,39 @@ class DetailPostPage extends StatelessWidget {
                           SizedBox(
                             width: 8,
                           ),
-                          GestureDetector(
-                            onTap: _follow,
-                            child: Text(
-                              "팔로우",
-                              style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                          // 실시간으로 데이터를 바꾸거나 할때 streamBuilder 사용 
+                          StreamBuilder<DocumentSnapshot>(
+                            stream: _followingStream(),
+                            builder: (context, snapshot) {
+                              if(!snapshot.hasData) {
+                                return Text('로딩중');
+                              }
+                              //data.data -> firestore의 맨 오른쪽 마지막 데이터 호출 객체
+                              var data = snapshot.data.data;
+                              if(data == null ||
+                              data[document['email']] == null ||
+                              data[document['email']] == false
+                              ){
+                                return GestureDetector(
+                                  onTap: _follow,
+                                  child: Text(
+                                    "팔로우",
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                );
+                              }
+                              return GestureDetector(
+                                onTap: _unfollow,
+                                child: Text(
+                                  "언팔로우",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              );
+                            }
                           ),
                         ],
                       ),
