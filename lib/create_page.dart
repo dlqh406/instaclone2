@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreatePage extends StatefulWidget {
-//  final FirebaseUser user;
-
-//  CreatePage(this.user);
+  final FirebaseUser user;
+  CreatePage(this.user);
 
   @override
   _CreatePageState createState() => _CreatePageState();
@@ -16,6 +16,8 @@ class CreatePage extends StatefulWidget {
 class _CreatePageState extends State<CreatePage> {
   final textEditingController = TextEditingController();
 
+  // 처음 메소드를 호풀할때 initState()로 작성
+  // 여기서 _getImage()가 호출됨                                                                    
   @override
   void initState() {
     super.initState();
@@ -32,6 +34,13 @@ class _CreatePageState extends State<CreatePage> {
 
   // 갤러리에서 사진 가져오기
   Future _getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery,
+    maxWidth: 640,
+    maxHeight: 480,);
+
+    setState(() {
+      _image = image;
+    });
 
   }
 
