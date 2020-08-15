@@ -89,7 +89,7 @@ class _CreatePageState extends State<CreatePage> {
           'photoUrl': downloadUrl,
           'userPhotoUrl': widget.user.photoUrl
     });
-
+      // progressindicator 삽입
       // 앞화면으로 이동(뒤로가기)
     Navigator.pop(context);
   }
