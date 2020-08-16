@@ -136,7 +136,7 @@ class HomePage extends StatelessWidget {
         .where((doc) => doc['email'] != user.email)
         .take(10)
         .toList();
-    // 합치기 myPosts 리스트와 otherPosts를 합치기, 같은 리스트형식
+    // 합치기 myPosts 리스트와 otherPosts를 합치기, 리스트에 리스트를 넣을려고 할때 => addALl
     myPosts.addAll(otherPosts);
 
     return ListView(

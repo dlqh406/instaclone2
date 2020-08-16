@@ -7,6 +7,7 @@ import 'comment_page.dart';
 class FeedWidget extends StatefulWidget {
   final DocumentSnapshot document;
   final FirebaseUser user;
+
   FeedWidget(this.document, this.user);
 
   @override
@@ -48,7 +49,19 @@ class _FeedWidgetState extends State<FeedWidget> {
           leading: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Icon(Icons.favorite_border),
+              // ?. 오류뜨면 null로 ??null이면 false로
+              widget.document['likedUser']?.contains(widget.user.email)?? false
+              // true면 이쪽
+              ? GestureDetector(
+              onTap: _unlike,
+              child: Icon(Icons.favorite,color: Colors.red,))
+
+              // false면 이쪽으로감
+              : GestureDetector(
+                  onTap: _like,
+                  child: Icon(Icons.favorite_border,)),
+
+
               SizedBox(
                 width: 8.0,
               ),
@@ -67,7 +80,8 @@ class _FeedWidgetState extends State<FeedWidget> {
               width: 16.0,
             ),
             Text(
-              '좋아요 100개',
+              // ?. -> 오류가 뜨면 null을 반환하고 ?? null이면 0개를 반환해라
+              '좋아요 ${widget.document['likedUser']?.length ?? 0}개',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
             ),
           ],
@@ -115,7 +129,7 @@ class _FeedWidgetState extends State<FeedWidget> {
                     ),
                   ],
                 ),
-                Text(widget.document['lastComment']?? ''),
+                Text(widget.document['lastComment'] ?? ''),
               ],
             ),
           ),
@@ -146,13 +160,45 @@ class _FeedWidgetState extends State<FeedWidget> {
 
   // 좋아요
   void _like() {
+    // 기존 좋아요 array(리스트) 가져오기
+    final List likedUsers =
+        List<String>.from(widget.document['likedUser'] ?? []);
+    // 나를 추가, 내가 좋아요를 눌러야 이 메소드가 호출되니깐
+    likedUsers.add(widget.user.email);
+
+    // 업데이트할 항목 문서로
+    final _updateData = {
+      'likedUser': likedUsers,
+    };
+
+    Firestore.instance
+        .collection('post')
+        .document(widget.document.documentID)
+        //setdata를 하면 다 날아감.. -> updataData는 "그 부분만" 업데이트를 하겠다라는 메소드
+        .updateData(_updateData);
   }
 
   // 좋아요 취소
   void _unlike() {
+    // 기존 좋아요 array(리스트) 가져오기
+    final List likedUsers =
+    List<String>.from(widget.document['likedUser'] ?? []);
+    // 나를 추가, 내가 좋아요를 눌러야 이 메소드가 호출되니깐
+    likedUsers.remove(widget.user.email);
+
+    // 업데이트할 항목 문서로
+    final _updateData = {
+      'likedUser': likedUsers,
+    };
+
+    Firestore.instance
+        .collection('post')
+        .document(widget.document.documentID)
+    //setdata를 하면 다 날아감.. -> updataData는 "그 부분만" 업데이트를 하겠다라는 메소드
+        .updateData(_updateData);
+
   }
 
   // 댓글 작성
-  void _writeComment(String text) {
-  }
+  void _writeComment(String text) {}
 }
