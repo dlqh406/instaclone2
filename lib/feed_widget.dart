@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'comment_page.dart';
 
 class FeedWidget extends StatefulWidget {
@@ -25,7 +24,8 @@ class _FeedWidgetState extends State<FeedWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var comment = widget.document['comment'] ?? 0;
+    // 댓글의 수 : 댓글 0개 모두 보기
+    var comment_count = widget.document['comment'] ?? 0;
     return Column(
       children: <Widget>[
         ListTile(
@@ -60,7 +60,6 @@ class _FeedWidgetState extends State<FeedWidget> {
               : GestureDetector(
                   onTap: _like,
                   child: Icon(Icons.favorite_border,)),
-
 
               SizedBox(
                 width: 8.0,
@@ -107,6 +106,8 @@ class _FeedWidgetState extends State<FeedWidget> {
         SizedBox(
           height: 8.0,
         ),
+
+        if(comment_count > 0)
         GestureDetector(
           onTap: () {
             Navigator.push(
@@ -124,7 +125,7 @@ class _FeedWidgetState extends State<FeedWidget> {
                 Row(
                   children: <Widget>[
                     Text(
-                      '댓글 $comment개 모두 보기',
+                      '댓글 $comment_count개 모두 보기',
                       style: TextStyle(color: Colors.grey[500]),
                     ),
                   ],
@@ -200,5 +201,8 @@ class _FeedWidgetState extends State<FeedWidget> {
   }
 
   // 댓글 작성
-  void _writeComment(String text) {}
+  void _writeComment(String text) {
+
+
+  }
 }
