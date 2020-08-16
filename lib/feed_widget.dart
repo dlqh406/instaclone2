@@ -1,18 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'comment_page.dart';
 
 class FeedWidget extends StatefulWidget {
-  final document = {
-    'userPhotoUrl': '',
-    'email': 'test@test.com',
-    'displayName': '더미',
-    'comment': 100,
-  };
-
-//  final FirebaseUser user;
-
-//  FeedWidget(this.document, this.user);
+  final DocumentSnapshot document;
+  final FirebaseUser user;
+  FeedWidget(this.document, this.user);
 
   @override
   _FeedWidgetState createState() => _FeedWidgetState();
@@ -45,6 +40,7 @@ class _FeedWidgetState extends State<FeedWidget> {
         Image.network(
           widget.document['photoUrl'],
           height: 300,
+          // double.infinity : 화면을 꽉채운다
           width: double.infinity,
           fit: BoxFit.cover,
         ),
@@ -119,7 +115,7 @@ class _FeedWidgetState extends State<FeedWidget> {
                     ),
                   ],
                 ),
-                Text(widget.document['lastComment']),
+                Text(widget.document['lastComment']?? ''),
               ],
             ),
           ),
