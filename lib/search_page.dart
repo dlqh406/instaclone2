@@ -31,8 +31,8 @@ class SearchPage extends StatelessWidget {
     return Scaffold(
       // firestore에서 특정하여 데이터를 가져올 경우, QuerySnapshot 을 가져옴
       body: StreamBuilder<QuerySnapshot>(
-        // path('post')는 왼쪽에서 첫번째
-        stream: Firestore.instance.collection('post').snapshots(),
+        // date 순서대로 : 만들어진 순서대로 정렬
+        stream: Firestore.instance.collection('post').orderBy('date',descending: true).snapshots(),
         // stream을 통해서 path가 'post'인 데이터 전체가 아래 snapshot으로 들어감
         builder: (context, snapshot) {
           if(!snapshot.hasData){
@@ -53,7 +53,9 @@ class SearchPage extends StatelessWidget {
             // 데이터가 다 들어가있는 리스트 [{text, greentea, test@test.com, asadsad},{...}]
             itemCount: snapshot.data.documents.length,
             itemBuilder: (BuildContext context, int index) {
-              return _buildListItem(context, snapshot.data.documents[index]);
+             var data = snapshot.data.documents;
+             return _buildListItem(context, data[index]);
+//              return _buildListItem(context, snapshot.data.documents[index]);
 
             },
           );

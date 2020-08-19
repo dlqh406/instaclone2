@@ -81,13 +81,15 @@ class _CreatePageState extends State<CreatePage> {
     final storageTaskSnapshot = await task.onComplete;
     // 업로드 완료 후 url를 downloadUrl 변수에 저장
     final downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+
     // firestore 업로드 실행
-      Firestore.instance.collection('post').add({
+    Firestore.instance.collection('post').add({
           'contents': textEditingController.text,
           'displayName': widget.user.displayName,
           'email': widget.user.email,
           'photoUrl': downloadUrl,
-          'userPhotoUrl': widget.user.photoUrl
+          'userPhotoUrl': widget.user.photoUrl,
+          'date' : DateTime.now()
     });
       // progressindicator 삽입
       // 앞화면으로 이동(뒤로가기)

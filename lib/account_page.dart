@@ -163,13 +163,12 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-
   Widget _buildGrid(context) {
     print('search_page created');
     return Expanded(
       child: StreamBuilder<QuerySnapshot>(
-          // path('post')는 왼쪽에서 첫번째
-            stream: Firestore.instance.collection('post').snapshots(),
+          // 내 이메일로 create한 게시물보기
+            stream: Firestore.instance.collection('post').where('email', isEqualTo:  user.email).snapshots(),
             // stream을 통해서 path가 'post'인 데이터 전체가 아래 snapshot으로 들어감
             builder: (context, snapshot) {
               if(!snapshot.hasData){
@@ -260,9 +259,9 @@ Stream<DocumentSnapshot> _followingStream(){
               context, MaterialPageRoute(builder: (context) => DetailPostPage(document, user)),
             );
           },
-          child: document['email'] == user.email?Image.network(document['photoUrl'],fit: BoxFit.cover):null
-          ),
+          child: Image.network(document['photoUrl'], fit: BoxFit.cover
+          )
         ),
-      );
+      ));
   }
 }
