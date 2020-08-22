@@ -1,5 +1,7 @@
+import 'dart:ffi';
 import 'dart:io';
 
+import 'package:chapter10/loading_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +19,7 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
   final textEditingController = TextEditingController();
-
+  var isProgressing = false;
   // 처음 메소드를 호풀할때 initState()로 작성
   // 여기서 _getImage()가 호출됨
   @override
@@ -48,6 +50,9 @@ class _CreatePageState extends State<CreatePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (isProgressing == true){
+      return LoadingPage() ;}
+
     return Scaffold(
       appBar: _buildAppBar(context),
       body: _buildBody(),
@@ -58,18 +63,26 @@ class _CreatePageState extends State<CreatePage> {
     return AppBar(
       title: Text('새 게시물'),
       actions: <Widget>[
-        FlatButton(
-          onPressed: () {
-            _uploadFile(context);
-          },
-          child: Text('공유'),
+              FlatButton(
+              onPressed: () async {
+                setState(() {
+                  isProgressing = true;
+                });
+                await _uploadFile(context);
+                setState(() {
+                  isProgressing = false;
+                });
+              },
+              child: Text('공유'),
         )
       ],
     );
   }
 
+
   Future _uploadFile(BuildContext context) async {
-    // storage에 업로드할 파일 경로 지정
+
+ //    storage에 업로드할 파일 경로 지정
     final firebaseStorageRef = FirebaseStorage.instance
         .ref()
         .child('post')
@@ -91,6 +104,7 @@ class _CreatePageState extends State<CreatePage> {
           'userPhotoUrl': widget.user.photoUrl,
           'date' : DateTime.now()
     });
+    isProgressing = true;
       // progressindicator 삽입
       // 앞화면으로 이동(뒤로가기)
     Navigator.pop(context);

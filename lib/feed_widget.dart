@@ -182,8 +182,7 @@ class _FeedWidgetState extends State<FeedWidget> {
   // 좋아요 취소
   void _unlike() {
     // 기존 좋아요 array(리스트) 가져오기
-    final List likedUsers =
-    List<String>.from(widget.document['likedUser'] ?? []);
+    final List likedUsers = List<String>.from(widget.document['likedUser'] ?? []);
     // 나를 추가, 내가 좋아요를 눌러야 이 메소드가 호출되니깐
     likedUsers.remove(widget.user.email);
 
